@@ -1,0 +1,8 @@
+#tag ColorGroup
+	CodeName=EditFieldBackgroundColorGroup
+	#tag Color
+		Type=2
+		Platform=2
+		Name=secondarySystemFillColor
+	#tag EndColor
+#tag EndColorGroup
