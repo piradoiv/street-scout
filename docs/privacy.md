@@ -1,8 +1,7 @@
 ---
 layout: page
+title: Street Scout Privacy Policy
 ---
-
-# Street Scout Privacy Policy
 
 Last updated: 2024-09-18
 
