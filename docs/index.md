@@ -2,10 +2,9 @@
 # Feel free to add content and custom Front Matter to this file.
 # To modify the layout, see https://jekyllrb.com/docs/themes/#overriding-theme-defaults
 
+title: Your Ultimate Urban Mapping Companion
 layout: home
 ---
-
-# Your Ultimate Urban Mapping Companion
 
 Discover the power of personalized urban exploration with Street Scout, the essential app for mappers, surveyors, and city enthusiasts.
 
