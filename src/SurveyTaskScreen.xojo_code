@@ -67,7 +67,7 @@ Begin MobileScreen SurveyTaskScreen Implements iOSMobileTableDataSourceEditing
       LockedInPosition=   False
       PanelIndex      =   -1
       Parent          =   ""
-      Scope           =   0
+      Scope           =   2
       Top             =   0
    End
    Begin Timer TaskUpdaterTimer
@@ -82,7 +82,7 @@ Begin MobileScreen SurveyTaskScreen Implements iOSMobileTableDataSourceEditing
       Left            =   0
       LeftButton      =   "Cancel"
       LockedInPosition=   False
-      Message         =   "This task will be permanently removed, including its photos."
+      Message         =   "This task will be permanently removed, including its pictures."
       PanelIndex      =   -1
       Parent          =   ""
       RightButton     =   "Delete Task"
@@ -114,6 +114,10 @@ End
 
 	#tag Method, Flags = &h21
 		Private Sub AddPIcture()
+		  #If TargetMobileSimulator
+		    CameraImagePicker.Source = MobileImagePicker.Sources.Photos
+		  #EndIf
+		  
 		  CameraImagePicker.Show(Self)
 		End Sub
 	#tag EndMethod
@@ -122,7 +126,7 @@ End
 		Private Function AllowRowEditing(table As iOSMobileTable, section As Integer, row As Integer) As Boolean
 		  // Part of the iOSMobileTableDataSourceEditing interface.
 		  
-		  Return section = 1
+		  Return False
 		End Function
 	#tag EndMethod
 
@@ -146,7 +150,7 @@ End
 		    
 		    Return Tasks.PictureCount(Task.Id)
 		  Case 2
-		    Return 3
+		    Return 4
 		  End Select
 		End Function
 	#tag EndMethod
@@ -189,11 +193,17 @@ End
 		      cell.Tag = ActionTypes.EditTitle
 		      Return cell
 		    Case 1
+		      cell.Text = "Notes"
+		      cell.Image = Picture.SystemImage("text.word.spacing", IconSize)
+		      cell.AccessoryType = MobileTableCellData.AccessoryTypes.Disclosure
+		      cell.Tag = ActionTypes.EditNotes
+		      Return cell
+		    Case 2
 		      cell.Text = "Take a Picture"
 		      cell.Image = Picture.SystemImage("camera", IconSize)
 		      cell.Tag = ActionTypes.TakePicture
 		      Return cell
-		    Case 2
+		    Case 3
 		      cell.Text = "Remove Task"
 		      cell.DetailText = "This action cannot be undone"
 		      cell.Image = Picture.SystemImage("trash", IconSize)
@@ -250,9 +260,19 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Sub ValueChangedHandler(sender As EditFieldScreen, value As String)
-		  Title = sender.Value
-		  Task.Title = Title
+		Private Sub ValueChangedHandler(sender As MobileScreen, value As String)
+		  Select Case sender
+		  Case IsA EditFieldScreen
+		    Title = EditFieldScreen(sender).Value
+		    Task.Title = Title
+		    
+		  Case IsA EditNoteScreen
+		    Task.Notes = EditNoteScreen(sender).Value
+		    
+		  Else
+		    Return
+		    
+		  End Select
 		  
 		  TaskUpdaterTimer.Reset
 		  TaskUpdaterTimer.RunMode = Timer.RunModes.Single
@@ -286,7 +306,9 @@ End
 
 
 	#tag Enum, Name = ActionTypes, Flags = &h21
-		EditTitle
+		None
+		  EditTitle
+		  EditNotes
 		  SeeOnMap
 		  TakePicture
 		  ViewPicture
@@ -322,6 +344,13 @@ End
 		    editField.Title = "Task Title"
 		    editField.Value = Task.Title
 		    editField.Show(Self)
+		    
+		  Case ActionTypes.EditNotes
+		    Self.BackButtonCaption = "Back"
+		    Var notesScreen As New EditNoteScreen
+		    AddHandler notesScreen.ValueChanged, WeakAddressOf ValueChangedHandler
+		    notesScreen.Value = Task.Notes
+		    notesScreen.Show(Self)
 		    
 		  Case ActionTypes.TakePicture
 		    AddPIcture

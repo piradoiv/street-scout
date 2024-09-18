@@ -32,6 +32,7 @@ Protected Class SurveyTask
 		  End If
 		  
 		  result.Title = json.Value("title")
+		  result.Notes = json.Lookup("notes", "")
 		  
 		  Return result
 		End Function
@@ -65,6 +66,7 @@ Protected Class SurveyTask
 		  End If
 		  
 		  result.Value("title") = Title
+		  result.Value("notes") = Notes
 		  
 		  Return result
 		End Function
@@ -103,6 +105,10 @@ Protected Class SurveyTask
 
 	#tag Property, Flags = &h21
 		Private mLocationPoint As Point
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		Notes As String
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
