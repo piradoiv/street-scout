@@ -1,5 +1,5 @@
 #tag MobileScreen
-Begin MobileScreen MainScreen Implements iOSMobileTableDataSourceEditing
+Begin MobileScreen MainScreen Implements  iOSMobileTableDataSource
    BackButtonCaption=   "Tasks"
    Compatibility   =   ""
    ControlCount    =   0
@@ -320,7 +320,7 @@ End
 		  newTask.Location = mLastLocation
 		  
 		  Var POIs() As String = mLastLocation.PointsOfInterest
-		  If POIs.Count > 0 Then
+		  If POIs <> Nil And POIs.Count > 0 Then
 		    newTask.Title = POIs(0)
 		  End If
 		  

@@ -5,6 +5,11 @@ Inherits MobileApplication
 	#tag Event
 		Sub Opening()
 		  Self.TintColor = Color.Teal
+		  
+		  Select Case KeyValue("map_type")
+		  Case "hybrid"
+		    DefaultMapType = MobileMapViewer.MapTypes.Hybrid
+		  End Select
 		End Sub
 	#tag EndEvent
 
@@ -99,8 +104,24 @@ Inherits MobileApplication
 	#tag EndMethod
 
 
-	#tag Property, Flags = &h0
-		DefaultMapType As MobileMapViewer.MapTypes = MobileMapViewer.MapTypes.RoadMap
+	#tag ComputedProperty, Flags = &h0
+		#tag Getter
+			Get
+			  Return mDefaultMapType
+			End Get
+		#tag EndGetter
+		#tag Setter
+			Set
+			  mDefaultMapType = value
+			  
+			  KeyValue("map_type") = If(value = MobileMapViewer.MapTypes.Hybrid, "hybrid", "")
+			End Set
+		#tag EndSetter
+		DefaultMapType As MobileMapViewer.MapTypes
+	#tag EndComputedProperty
+
+	#tag Property, Flags = &h21
+		Private mDefaultMapType As MobileMapViewer.MapTypes = MobileMapViewer.MapTypes.RoadMap
 	#tag EndProperty
 
 
@@ -210,7 +231,7 @@ Inherits MobileApplication
 			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="DefaultMapType"
+			Name="mDefaultMapType"
 			Visible=false
 			Group="Behavior"
 			InitialValue="MobileMapViewer.MapTypes.RoadMap"

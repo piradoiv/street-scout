@@ -51,7 +51,7 @@ Begin MobileContainer MainBlankSlateContainer
       SelectedText    =   ""
       SelectionLength =   0
       SelectionStart  =   0
-      Text            =   "Press on the ""+"" icon in the top right corner to create your first task."
+      Text            =   "Tap on the top right corner icon to create your first task."
       TextColor       =   &c000000
       TextFont        =   ""
       TextSize        =   16
