@@ -3,7 +3,7 @@
 <p align="center">
   <img src="https://github.com/user-attachments/assets/6c7103be-845e-495b-8edb-0fc2d03fe82d" alt="Street Scout Icon"><br>
   <strong>Free Companion App for Mappers</strong><br>
-  <a href="https://piradoiv.github.io/street-scout/" target="_blank">Street Scout Website</a>
+  <a href="https://streetscout.rcruz.es/" target="_blank">Street Scout Website</a>
 </p>
 <div align="center">
   <img src="https://github.com/user-attachments/assets/838b74c0-2d69-42ca-886b-2ae1166eed89" alt="Street Scout iPhone Screenshot" height="400">
