@@ -12,9 +12,7 @@
 </div>
 
 
-Take this app with you while you walk around your city. Create geolocated tasks. Attach as many pictures as you want.
-
-Use these tasks later, at home, to update maps like OpenStreetMap.
+Your urban explorer's toolkit. Map, snap, and track your discoveries. Turn every walk into a mapping adventure. Update the world, one street at a time.
 
 ## How to build the app
 
