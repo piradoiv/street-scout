@@ -8,6 +8,19 @@ layout: home
 
 Discover the power of personalized urban exploration with Street Scout, the essential app for mappers, surveyors, and city enthusiasts.
 
+<div align="center">
+  <p>
+    <img src="{{ "/assets/logo-big.png" | relative_url }}" style="border-radius: 32px">
+  </p>
+  <img src="{{ "/assets/screenshot-iphone.png" | relative_url }}" height="400">
+  <img src="{{ "/assets/screenshot-ipad.png" | relative_url }}" height="400">
+  <p>
+    <a href="https://apps.apple.com/app/street-scout/id6695758358" target="_blank">
+        <img src="{{ "/assets/download-app-store.svg" | relative_url }}" height="40">
+    </a>
+  </p>
+</div>
+
 🗺️ **Geolocated Tasks**: Create and manage location-specific tasks effortlessly. Perfect for OpenStreetMap contributors, urban planners, and curious explorers.
 
 📸 **Photo Attachments**: Capture the essence of each location with multiple high-quality photos. Document changes, discover hidden gems, and bring your urban adventures to life.
