@@ -25,15 +25,13 @@ Begin MobileScreen EditNoteScreen
       AutoLayout      =   NotesTextArea, 1, <Parent>, 1, False, +1.00, 4, 1, *kStdGapCtlToViewH, , True
       AutoLayout      =   NotesTextArea, 2, <Parent>, 2, False, +1.00, 4, 1, -*kStdGapCtlToViewH, , True
       AutoLayout      =   NotesTextArea, 3, TopLayoutGuide, 4, False, +1.00, 4, 1, *kStdControlGapV, , True
-      BorderStyle     =   2
+      BorderStyle     =   0
       ControlCount    =   0
       Enabled         =   True
       Height          =   487
       Left            =   20
       LockedInPosition=   False
       maximumCharactersAllowed=   0
-      PanelIndex      =   -1
-      Parent          =   ""
       ReadOnly        =   False
       Scope           =   2
       SelectedText    =   ""

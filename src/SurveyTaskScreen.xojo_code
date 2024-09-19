@@ -126,7 +126,7 @@ End
 		Private Function AllowRowEditing(table As iOSMobileTable, section As Integer, row As Integer) As Boolean
 		  // Part of the iOSMobileTableDataSourceEditing interface.
 		  
-		  Return False
+		  Return section = 1
 		End Function
 	#tag EndMethod
 
@@ -332,6 +332,10 @@ End
 		  Select Case cell.Tag
 		    
 		  Case ActionTypes.SeeOnMap
+		    If Task.Location = Nil Then
+		      MessageBox("This task has been created without a location.")
+		      Return
+		    End If
 		    Self.BackButtonCaption = "Back"
 		    Var s As New ViewTaskInMapScreen
 		    s.Task = Task
@@ -377,7 +381,7 @@ End
 		  End If
 		  
 		  Var action As New iOSMobileTableRowAction(iOSMobileTableRowAction.Styles.Normal, "Share", "share")
-		  action.BackgroundColor = Color.Teal
+		  action.BackgroundColor = PrimaryColorGroup
 		  actions.Add(action)
 		  
 		  Return actions

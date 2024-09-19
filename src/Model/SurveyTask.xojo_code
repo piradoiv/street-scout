@@ -92,6 +92,10 @@ Protected Class SurveyTask
 	#tag ComputedProperty, Flags = &h0
 		#tag Getter
 			Get
+			  If mLocationPoint = Nil Then
+			    Return Nil
+			  End If
+			  
 			  Return New MapLocation(mLocationPoint.X, mLocationPoint.Y)
 			End Get
 		#tag EndGetter
@@ -180,6 +184,14 @@ Protected Class SurveyTask
 			InitialValue=""
 			Type="String"
 			EditorType="MultiLineEditor"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Notes"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="String"
+			EditorType=""
 		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class

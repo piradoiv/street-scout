@@ -4,7 +4,7 @@ Inherits MobileApplication
 	#tag CompatibilityFlags = TargetIOS
 	#tag Event
 		Sub Opening()
-		  Self.TintColor = Color.Teal
+		  Self.TintColor = PrimaryColorGroup
 		  
 		  Select Case KeyValue("map_type")
 		  Case "hybrid"
@@ -231,17 +231,12 @@ Inherits MobileApplication
 			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="mDefaultMapType"
+			Name="DefaultMapType"
 			Visible=false
 			Group="Behavior"
-			InitialValue="MobileMapViewer.MapTypes.RoadMap"
+			InitialValue=""
 			Type="MobileMapViewer.MapTypes"
-			EditorType="Enum"
-			#tag EnumValues
-				"0 - RoadMap"
-				"1 - Satellite"
-				"2 - Hybrid"
-			#tag EndEnumValues
+			EditorType=""
 		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class

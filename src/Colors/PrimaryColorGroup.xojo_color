@@ -1,0 +1,9 @@
+#tag ColorGroup
+	CodeName=PrimaryColorGroup
+	#tag Color
+		Type=1
+		Platform=2
+		Light=2EA56600
+		Dark=1B603C00
+	#tag EndColor
+#tag EndColorGroup

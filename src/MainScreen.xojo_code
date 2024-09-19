@@ -1,5 +1,5 @@
 #tag MobileScreen
-Begin MobileScreen MainScreen Implements  iOSMobileTableDataSource
+Begin MobileScreen MainScreen Implements iOSMobileTableDataSource
    BackButtonCaption=   "Tasks"
    Compatibility   =   ""
    ControlCount    =   0
@@ -59,18 +59,6 @@ Begin MobileScreen MainScreen Implements  iOSMobileTableDataSource
       _ClosingFired   =   False
       _OpeningCompleted=   False
    End
-   Begin MobileLocation mLocation
-      Accuracy        =   1
-      AllowBackgroundUpdates=   False
-      AuthorizationState=   0
-      Left            =   0
-      LockedInPosition=   False
-      PanelIndex      =   -1
-      Parent          =   ""
-      Scope           =   2
-      Top             =   0
-      VisitAwareness  =   False
-   End
    Begin TaskRepository Tasks
       Left            =   0
       LockedInPosition=   False
@@ -90,14 +78,6 @@ Begin MobileScreen MainScreen Implements  iOSMobileTableDataSource
       Top             =   32
       Type            =   4
       Width           =   22.0
-   End
-   Begin Timer WaitForLocationTimer
-      LockedInPosition=   False
-      PanelIndex      =   -1
-      Parent          =   ""
-      Period          =   150
-      RunMode         =   0
-      Scope           =   0
    End
 End
 #tag EndMobileScreen
@@ -127,14 +107,9 @@ End
 
 	#tag Method, Flags = &h21
 		Private Sub AddTask()
-		  mLastLocation = Nil
-		  
-		  If mLocation.AuthorizationState <> MobileLocation.AuthorizationStates.AuthorizedAppInUse Then
-		    mLocation.RequestUsageAuthorization(MobileLocation.UsageTypes.AppInUse)
-		  End If
-		  
-		  mLocation.Start
-		  WaitForLocationTimer.RunMode = Timer.RunModes.Multiple
+		  Var s As New CreateNewTaskScreen
+		  AddHandler s.NewTaskAvailable, WeakAddressOf NewTaskAvailableHandler
+		  s.Show
 		End Sub
 	#tag EndMethod
 
@@ -168,6 +143,14 @@ End
 		  AddHandler editScreen.Closing, WeakAddressOf ClosingHandler
 		  
 		  editScreen.Show(Self)
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub NewTaskAvailableHandler(sender As CreateNewTaskScreen, newTask As SurveyTask)
+		  sender.Close
+		  Tasks.Create(newTask)
+		  EditTask(newTask)
 		End Sub
 	#tag EndMethod
 
@@ -257,19 +240,6 @@ End
 	#tag EndMethod
 
 
-	#tag Property, Flags = &h21
-		Private mLastLocation As MapLocation
-	#tag EndProperty
-
-	#tag Property, Flags = &h21
-		Private mMapLocations() As MapLocation
-	#tag EndProperty
-
-	#tag Property, Flags = &h21
-		Private mPositionPin As MapLocation
-	#tag EndProperty
-
-
 #tag EndWindowCode
 
 #tag Events ScreenTable
@@ -292,42 +262,6 @@ End
 		  
 		  result.Add(New iOSMobileTableRowAction(iOSMobileTableRowAction.Styles.Destructive, "Delete", "delete"))
 		End Function
-	#tag EndEvent
-#tag EndEvents
-#tag Events mLocation
-	#tag Event
-		Sub LocationChanged(latitude As Double, longitude As Double, accuracy As Double, altitude As Double, altitudeAccuracy As Double, course As Double, speed As Double)
-		  mLocation.Stop
-		  mLastLocation = New MapLocation(latitude, longitude)
-		End Sub
-	#tag EndEvent
-	#tag Event
-		Sub Opening()
-		  Me.AllowBackgroundUpdates = False
-		End Sub
-	#tag EndEvent
-#tag EndEvents
-#tag Events WaitForLocationTimer
-	#tag Event
-		Sub Run()
-		  If mLastLocation = Nil Then
-		    Return
-		  End If
-		  
-		  Me.RunMode = Timer.RunModes.Off
-		  
-		  Var newTask As New SurveyTask
-		  newTask.Location = mLastLocation
-		  
-		  Var POIs() As String = mLastLocation.PointsOfInterest
-		  If POIs <> Nil And POIs.Count > 0 Then
-		    newTask.Title = POIs(0)
-		  End If
-		  
-		  Tasks.Create(newTask)
-		  
-		  EditTask(newTask)
-		End Sub
 	#tag EndEvent
 #tag EndEvents
 #tag ViewBehavior
