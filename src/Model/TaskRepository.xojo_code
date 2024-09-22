@@ -162,8 +162,9 @@ Protected Class TaskRepository
 		    Return Nil
 		  End If
 		  
+		  Var filename As String = PicturesFolderItem(id).ChildAt(index).Name
 		  Var parentFolder As FolderItem = If(original, OriginalPicturesFolderItem(id), PicturesFolderItem(id))
-		  Var file As FolderItem = parentFolder.ChildAt(index)
+		  Var file As FolderItem = parentFolder.Child(filename)
 		  
 		  If original And Not file.Exists Then
 		    Return PictureAt(id, index, False)
