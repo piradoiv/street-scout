@@ -25,7 +25,7 @@ Begin MobileScreen CreateNewTaskScreen
       ControlCount    =   0
       CornerSize      =   0.0
       Enabled         =   True
-      FillColor       =   PrimaryColorGroup
+      FillColor       =   FullScreenBackgroundColorGroup
       Height          =   568
       Left            =   0
       LockedInPosition=   False

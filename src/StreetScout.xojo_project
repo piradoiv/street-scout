@@ -18,6 +18,7 @@ MobileScreen=ViewTaskInMapScreen;ViewTaskInMapScreen.xojo_code;&h0000000038663FF
 MobileScreen=ViewPictureScreen;ViewPictureScreen.xojo_code;&h00000000648DA7FF;&h0000000000000000;false
 Folder=Colors;Colors;&h00000000735D07FF;&h0000000000000000;false
 ColorAsset=PrimaryColorGroup;Colors/PrimaryColorGroup.xojo_color;&h0000000060466FFF;&h00000000735D07FF;false
+ColorAsset=FullScreenBackgroundColorGroup;Colors/FullScreenBackgroundColorGroup.xojo_color;&h00000000671817FF;&h00000000735D07FF;false
 ColorAsset=LabelColorGroup;Colors/LabelColorGroup.xojo_color;&h000000002AEDBFFF;&h00000000735D07FF;false
 Folder=Model;Model;&h00000000770D97FF;&h0000000000000000;false
 Class=SurveyTask;Model/SurveyTask.xojo_code;&h000000000A92DFFF;&h00000000770D97FF;false
