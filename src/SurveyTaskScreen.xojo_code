@@ -395,7 +395,7 @@ End
 		      Return
 		    End If
 		    
-		    Var p As Picture = Tasks.PictureAt(Task.Id, row)
+		    Var p As Picture = Tasks.PictureAt(Task.Id, row, True)
 		    If p <> Nil Then
 		      Share.SharePicture(p, Self, Me)
 		    End If
