@@ -4,6 +4,7 @@ Protected Class TaskRepository
 		Sub AddPicture(id As String, pic As Picture)
 		  Var filename As String = DateTime.Now.SQLDateTime
 		  
+		  pic.Save(OriginalPicturesFolderItem(id).Child(filename), Picture.Formats.HEIC)
 		  ResizePic(pic).Save(PicturesFolderItem(id).Child(filename), Picture.Formats.JPEG)
 		  UpdateTaskPreviewPicture(id, LastPictureIndex(id))
 		  UpdateTaskPreviewPicture(id)
@@ -49,6 +50,11 @@ Protected Class TaskRepository
 		  Var document As FolderItem = DocumentFolderItem(id)
 		  If document.Exists Then
 		    document.Remove
+		  End If
+		  
+		  Var originals As FolderItem = OriginalPicturesFolderItem(id)
+		  If originals.Exists And originals.IsFolder Then
+		    originals.RemoveFolderAndContents
 		  End If
 		  
 		  Var pictures As FolderItem = PicturesFolderItem(id)
@@ -134,16 +140,37 @@ Protected Class TaskRepository
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h21
+		Private Function OriginalPicturesFolderItem(id As String) As FolderItem
+		  Var pictures As FolderItem = App.DataPath.Child("original-pictures")
+		  If Not pictures.Exists Then
+		    pictures.CreateFolder
+		  End If
+		  
+		  Var result As FolderItem = pictures.Child(id)
+		  If Not result.Exists Then
+		    result.CreateFolder
+		  End If
+		  
+		  Return result
+		End Function
+	#tag EndMethod
+
 	#tag Method, Flags = &h0
-		Function PictureAt(id As String, index As Integer) As Picture
+		Function PictureAt(id As String, index As Integer, original As Boolean = False) As Picture
 		  If index > LastPictureIndex(id) Then
 		    Return Nil
 		  End If
 		  
-		  Var file As FolderItem = PicturesFolderItem(id).ChildAt(index)
-		  Var p As Picture = Picture.Open(file)
+		  Var filename As String = PicturesFolderItem(id).ChildAt(index).Name
+		  Var parentFolder As FolderItem = If(original, OriginalPicturesFolderItem(id), PicturesFolderItem(id))
+		  Var file As FolderItem = parentFolder.Child(filename)
 		  
-		  Return p
+		  If original And Not file.Exists Then
+		    Return PictureAt(id, index, False)
+		  End If
+		  
+		  Return Picture.Open(file)
 		End Function
 	#tag EndMethod
 
@@ -221,7 +248,9 @@ Protected Class TaskRepository
 
 	#tag Method, Flags = &h0
 		Sub RemovePictureAt(id As String, index As Integer)
-		  PreviewPicturesFolderItem(id).Child(PictureNameAt(id, index)).Remove
+		  Var filename As String = PictureNameAt(id, index)
+		  OriginalPicturesFolderItem(id).Child(filename).Remove
+		  PreviewPicturesFolderItem(id).Child(filename).Remove
 		  PicturesFolderItem(id).ChildAt(index).Remove
 		  UpdateTaskPreviewPicture(id)
 		End Sub
