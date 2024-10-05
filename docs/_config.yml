@@ -23,10 +23,10 @@ description: >- # this means to ignore newlines until "baseurl:"
   Your urban explorer's toolkit. Map, snap, and track your
   discoveries. Turn every walk into a mapping adventure.
   Update the world, one street at a time.
-baseurl: "/street-scout" # the subpath of your site, e.g. /blog
-url: "https://piradoiv.github.io" # the base hostname & protocol for your site, e.g. http://example.com
+baseurl: "/" # the subpath of your site, e.g. /blog
+url: "https://streetscout.rcruz.es" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: piradoiv
-github_username:  piradoiv/street-scout
+github_username:  piradoiv
 
 # Build settings
 theme: minima

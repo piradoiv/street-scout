@@ -419,11 +419,7 @@ End
 		      Return
 		    End If
 		    
-<<<<<<< Updated upstream
-		    Var p As Picture = Tasks.PictureAt(Task.Id, row)
-=======
 		    Var p As Picture = Tasks.PictureAt(Task.Id, row, True).Photo
->>>>>>> Stashed changes
 		    If p <> Nil Then
 		      Share.SharePicture(p, Self, Me)
 		    End If

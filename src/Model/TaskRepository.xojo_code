@@ -4,12 +4,8 @@ Protected Class TaskRepository
 		Sub AddPicture(id As String, photo As SurveyPhoto)
 		  Var filename As String = photo.Id
 		  
-<<<<<<< Updated upstream
-		  ResizePic(pic).Save(PicturesFolderItem(id).Child(filename), Picture.Formats.JPEG)
-=======
 		  photo.Photo.Save(OriginalPicturesFolderItem(id).Child(filename), Picture.Formats.HEIC)
 		  ResizePic(photo.Photo).Save(PicturesFolderItem(id).Child(filename), Picture.Formats.JPEG)
->>>>>>> Stashed changes
 		  UpdateTaskPreviewPicture(id, LastPictureIndex(id))
 		  UpdateTaskPreviewPicture(id)
 		  
@@ -87,6 +83,11 @@ Protected Class TaskRepository
 		  Var document As FolderItem = DocumentFolderItem(id)
 		  If document.Exists Then
 		    document.Remove
+		  End If
+		  
+		  Var originals As FolderItem = OriginalPicturesFolderItem(id)
+		  If originals.Exists And originals.IsFolder Then
+		    originals.RemoveFolderAndContents
 		  End If
 		  
 		  Var pictures As FolderItem = PicturesFolderItem(id)
@@ -172,10 +173,6 @@ Protected Class TaskRepository
 		End Function
 	#tag EndMethod
 
-<<<<<<< Updated upstream
-	#tag Method, Flags = &h0
-		Function PictureAt(id As String, index As Integer) As Picture
-=======
 	#tag Method, Flags = &h21
 		Private Function MetadataFolderItem(id As String) As FolderItem
 		  System.DebugLog(CurrentMethodName + ": '" + id + "'")
@@ -205,18 +202,16 @@ Protected Class TaskRepository
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function PictureAt(id As String, index As Integer, original As Boolean = False) As SurveyPhoto
->>>>>>> Stashed changes
+		Function PictureAt(id As String, index As Integer, original As Boolean = False) As Picture
 		  If index > LastPictureIndex(id) Then
 		    Return Nil
 		  End If
 		  
-		  Var file As FolderItem = PicturesFolderItem(id).ChildAt(index)
-		  Var p As Picture = Picture.Open(file)
+		  Var filename As String = PicturesFolderItem(id).ChildAt(index).Name
+		  Var parentFolder As FolderItem = If(original, OriginalPicturesFolderItem(id), PicturesFolderItem(id))
+		  Var file As FolderItem = parentFolder.Child(filename)
 		  
-<<<<<<< Updated upstream
 		  Return p
-=======
 		  If original And Not file.Exists Then
 		    Return PictureAt(id, index, False)
 		  End If
@@ -241,7 +236,6 @@ Protected Class TaskRepository
 		  End If
 		  
 		  Return result
->>>>>>> Stashed changes
 		End Function
 	#tag EndMethod
 
@@ -328,14 +322,10 @@ Protected Class TaskRepository
 
 	#tag Method, Flags = &h0
 		Sub RemovePictureAt(id As String, index As Integer)
-<<<<<<< Updated upstream
-		  PreviewPicturesFolderItem(id).Child(PictureNameAt(id, index)).Remove
-=======
 		  Var filename As String = PictureNameAt(id, index)
 		  MetadataFolderItem(filename).Remove
 		  OriginalPicturesFolderItem(id).Child(filename).Remove
 		  PreviewPicturesFolderItem(id).Child(filename).Remove
->>>>>>> Stashed changes
 		  PicturesFolderItem(id).ChildAt(index).Remove
 		  UpdateTaskPreviewPicture(id)
 		End Sub
