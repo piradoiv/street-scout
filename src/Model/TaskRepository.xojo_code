@@ -1,13 +1,37 @@
 #tag Class
 Protected Class TaskRepository
 	#tag Method, Flags = &h0
-		Sub AddPicture(id As String, pic As Picture)
-		  Var filename As String = DateTime.Now.SQLDateTime
+		Sub AddPicture(id As String, photo As SurveyPhoto)
+		  Var filename As String = photo.Id
 		  
-		  pic.Save(OriginalPicturesFolderItem(id).Child(filename), Picture.Formats.HEIC)
-		  ResizePic(pic).Save(PicturesFolderItem(id).Child(filename), Picture.Formats.JPEG)
+		  photo.Photo.Save(OriginalPicturesFolderItem(id).Child(filename), Picture.Formats.HEIC)
+		  ResizePic(photo.Photo).Save(PicturesFolderItem(id).Child(filename), Picture.Formats.JPEG)
 		  UpdateTaskPreviewPicture(id, LastPictureIndex(id))
 		  UpdateTaskPreviewPicture(id)
+		  
+		  Var metadata As FolderItem = MetadataFolderItem(photo.Id)
+		  If metadata.Exists Then
+		    metadata.Remove
+		  End If
+		  
+		  Var json As New JSONItem
+		  json.Compact = False
+		  json.Value("id") = photo.Id
+		  json.Value("task_id") = id
+		  If photo.Location <> Nil Then
+		    Var location As New JSONItem
+		    location.Value("latitude") = photo.Location.X
+		    location.Value("longitude") = photo.Location.Y
+		    json.Value("location") = location
+		  End If
+		  
+		  If photo.CreatedAt <> Nil Then
+		    json.Value("created_at") = photo.CreatedAt.SecondsFrom1970
+		  End If
+		  
+		  Var writer As TextOutputStream = TextOutputStream.Open(metadata)
+		  writer.Write(json.ToString)
+		  writer.Close
 		End Sub
 	#tag EndMethod
 
@@ -47,6 +71,15 @@ Protected Class TaskRepository
 
 	#tag Method, Flags = &h0
 		Sub Delete(id As String)
+		  Var task As SurveyTask = GetById(id)
+		  If task <> Nil Then
+		    For i As Integer = 0 To LastPictureIndex(id)
+		      Var p As SurveyPhoto = PictureAt(id, i)
+		      RemoveMetadata(p.Id)
+		    Next
+		  End If
+		  task = Nil
+		  
 		  Var document As FolderItem = DocumentFolderItem(id)
 		  If document.Exists Then
 		    document.Remove
@@ -141,6 +174,18 @@ Protected Class TaskRepository
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
+		Private Function MetadataFolderItem(id As String) As FolderItem
+		  System.DebugLog(CurrentMethodName + ": '" + id + "'")
+		  Var folder As FolderItem = App.DataPath.Child("metadata")
+		  If Not folder.Exists Then
+		    folder.CreateFolder
+		  End If
+		  
+		  Return folder.Child(id)
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
 		Private Function OriginalPicturesFolderItem(id As String) As FolderItem
 		  Var pictures As FolderItem = App.DataPath.Child("original-pictures")
 		  If Not pictures.Exists Then
@@ -166,11 +211,31 @@ Protected Class TaskRepository
 		  Var parentFolder As FolderItem = If(original, OriginalPicturesFolderItem(id), PicturesFolderItem(id))
 		  Var file As FolderItem = parentFolder.Child(filename)
 		  
+		  Return p
 		  If original And Not file.Exists Then
 		    Return PictureAt(id, index, False)
 		  End If
 		  
-		  Return Picture.Open(file)
+		  Var result As New SurveyPhoto
+		  result.Photo = Picture.Open(file)
+		  Var metadata As FolderItem = MetadataFolderItem(filename)
+		  If metadata.Exists Then
+		    Var reader As TextInputStream = TextInputStream.Open(metadata)
+		    Var json As JSONItem = New JSONItem(reader.ReadAll)
+		    reader.Close
+		    
+		    result.Id = json.Lookup("id", "")
+		    If json.HasKey("created_at") Then
+		      result.CreatedAt = New DateTime(json.Value("created_at").DoubleValue)
+		    End If
+		    
+		    If json.HasKey("location") Then
+		      Var location As JSONItem = json.Child("location")
+		      result.Location = New Point(location.Value("latitude").DoubleValue, location.Value("longitude").DoubleValue)
+		    End If
+		  End If
+		  
+		  Return result
 		End Function
 	#tag EndMethod
 
@@ -247,8 +312,18 @@ Protected Class TaskRepository
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub RemoveMetadata(id As String)
+		  Var metadata As FolderItem = MetadataFolderItem(id)
+		  If metadata.Exists Then
+		    metadata.Remove
+		  End If
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub RemovePictureAt(id As String, index As Integer)
 		  Var filename As String = PictureNameAt(id, index)
+		  MetadataFolderItem(filename).Remove
 		  OriginalPicturesFolderItem(id).Child(filename).Remove
 		  PreviewPicturesFolderItem(id).Child(filename).Remove
 		  PicturesFolderItem(id).ChildAt(index).Remove
@@ -307,7 +382,7 @@ Protected Class TaskRepository
 		    Return
 		  End If
 		  
-		  Var p As Picture = PictureAt(id, row)
+		  Var p As Picture = PictureAt(id, row).Photo
 		  Var ratio As Double = w / p.Width
 		  
 		  Var preview As New Picture(w, p.Height * ratio)

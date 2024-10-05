@@ -98,6 +98,24 @@ Begin MobileScreen SurveyTaskScreen Implements iOSMobileTableDataSourceEditing
       Scope           =   2
       Top             =   0
    End
+   Begin MobileLocation GPS
+      Accuracy        =   1
+      AllowBackgroundUpdates=   False
+      AuthorizationState=   ""
+      Height          =   32
+      Height          =   32
+      Left            =   60
+      Left            =   60
+      LockedInPosition=   False
+      PanelIndex      =   -1
+      Parent          =   ""
+      Scope           =   2
+      Top             =   60
+      Top             =   60
+      VisitAwareness  =   False
+      Width           =   32
+      Width           =   32
+   End
 End
 #tag EndMobileScreen
 
@@ -118,6 +136,8 @@ End
 		    CameraImagePicker.Source = MobileImagePicker.Sources.Photos
 		  #EndIf
 		  
+		  mLastLocation = Nil
+		  GPS.Start
 		  CameraImagePicker.Show(Self)
 		End Sub
 	#tag EndMethod
@@ -286,6 +306,10 @@ End
 
 
 	#tag Property, Flags = &h21
+		Private mLastLocation As Pair
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
 		Private mSurveyTask As SurveyTask
 	#tag EndProperty
 
@@ -395,7 +419,7 @@ End
 		      Return
 		    End If
 		    
-		    Var p As Picture = Tasks.PictureAt(Task.Id, row, True)
+		    Var p As Picture = Tasks.PictureAt(Task.Id, row, True).Photo
 		    If p <> Nil Then
 		      Share.SharePicture(p, Self, Me)
 		    End If
@@ -406,10 +430,24 @@ End
 #tag Events CameraImagePicker
 	#tag Event
 		Sub Selected(pic As Picture)
+		  GPS.Stop
+		  
+		  Var photo As New SurveyPhoto
+		  photo.Photo = pic
+		  
+		  If mLastLocation <> Nil Then
+		    photo.Location = New Point(mLastLocation.Left.DoubleValue, mLastLocation.Right.DoubleValue)
+		  End If
+		  
 		  Var repository As New TaskRepository
-		  repository.AddPicture(Task.Id, pic)
+		  repository.AddPicture(Task.Id, photo)
 		  
 		  Refresh
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub Cancelled()
+		  GPS.Stop
 		End Sub
 	#tag EndEvent
 #tag EndEvents
@@ -427,6 +465,13 @@ End
 		    Tasks.Delete(Task.Id)
 		    Self.Close
 		  End If
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events GPS
+	#tag Event
+		Sub LocationChanged(latitude As Double, longitude As Double, accuracy As Double, altitude As Double, altitudeAccuracy As Double, course As Double, speed As Double)
+		  mLastLocation = latitude : longitude
 		End Sub
 	#tag EndEvent
 #tag EndEvents
