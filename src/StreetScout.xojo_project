@@ -16,6 +16,7 @@ MobileScreen=EditFieldScreen;EditFieldScreen.xojo_code;&h000000004D8A67FF;&h0000
 MobileScreen=EditNoteScreen;EditNoteScreen.xojo_code;&h0000000050EC4FFF;&h0000000000000000;false
 MobileScreen=ViewTaskInMapScreen;ViewTaskInMapScreen.xojo_code;&h0000000038663FFF;&h0000000000000000;false
 MobileScreen=ViewPictureScreen;ViewPictureScreen.xojo_code;&h00000000648DA7FF;&h0000000000000000;false
+MobileScreen=LocationPermissionScreen;LocationPermissionScreen.xojo_code;&h00000000123456FF;&h0000000000000000;false
 Folder=Colors;Colors;&h00000000735D07FF;&h0000000000000000;false
 ColorAsset=PrimaryColorGroup;Colors/PrimaryColorGroup.xojo_color;&h0000000060466FFF;&h00000000735D07FF;false
 ColorAsset=FullScreenBackgroundColorGroup;Colors/FullScreenBackgroundColorGroup.xojo_color;&h00000000671817FF;&h00000000735D07FF;false

@@ -206,17 +206,32 @@ End
 		    MobileLocation.AuthorizationStates.AuthorizedAppInUse
 		    GPS.Start
 		    
-		    // The user won't let us
+		    // The user won't let us - show dedicated permission screen
 		  Case MobileLocation.AuthorizationStates.Denied, _
 		    MobileLocation.AuthorizationStates.Restricted
 		    System.DebugLog(CurrentMethodName + ": Starting timer because authorization state is Denied or Restricted")
-		    GPSTimer.RunMode = Timer.RunModes.Single
+		    ShowLocationPermissionScreen
 		    
 		    // The user needs to decide
 		  Case MobileLocation.AuthorizationStates.NotDetermined
 		    GPS.RequestUsageAuthorization(MobileLocation.UsageTypes.AppInUse)
 		    
 		  End Select
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub ShowLocationPermissionScreen()
+		  Var permissionScreen As New LocationPermissionScreen
+		  AddHandler permissionScreen.ContinueWithoutLocation, WeakAddressOf PermissionScreen_ContinueWithoutLocation
+		  Self.PresentScreen(permissionScreen)
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub PermissionScreen_ContinueWithoutLocation(sender As LocationPermissionScreen)
+		  sender.Close
+		  AddTask
 		End Sub
 	#tag EndMethod
 
@@ -240,15 +255,16 @@ End
 		  
 		  Select Case state
 		  Case MobileLocation.AuthorizationStates.AuthorizedAlways, _
-		    MobileLocation.AuthorizationStates.AuthorizedAppInUse, _
-		    MobileLocation.AuthorizationStates.Restricted
+		    MobileLocation.AuthorizationStates.AuthorizedAppInUse
 		    GPS.Start
+		    System.DebugLog(CurrentMethodName + ": Starting timer")
+		    GPSTimer.RunMode = Timer.RunModes.Single
+		  Case MobileLocation.AuthorizationStates.Denied, _
+		    MobileLocation.AuthorizationStates.Restricted
+		    ShowLocationPermissionScreen
 		  Case MobileLocation.AuthorizationStates.NotDetermined
 		    Return
 		  End Select
-		  
-		  System.DebugLog(CurrentMethodName + ": Starting timer")
-		  GPSTimer.RunMode = Timer.RunModes.Single
 		End Sub
 	#tag EndEvent
 	#tag Event
@@ -268,7 +284,7 @@ End
 	#tag Event
 		Sub Run()
 		  If mLastLocation = Nil Then
-		    LocationErrorMessageBox.Show
+		    ShowLocationPermissionScreen
 		    Return
 		  End If
 		  
