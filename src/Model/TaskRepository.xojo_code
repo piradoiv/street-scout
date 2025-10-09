@@ -202,7 +202,7 @@ Protected Class TaskRepository
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function PictureAt(id As String, index As Integer, original As Boolean = False) As Picture
+		Function PictureAt(id As String, index As Integer, original As Boolean = False) As SurveyPhoto
 		  If index > LastPictureIndex(id) Then
 		    Return Nil
 		  End If
@@ -211,7 +211,6 @@ Protected Class TaskRepository
 		  Var parentFolder As FolderItem = If(original, OriginalPicturesFolderItem(id), PicturesFolderItem(id))
 		  Var file As FolderItem = parentFolder.Child(filename)
 		  
-		  Return p
 		  If original And Not file.Exists Then
 		    Return PictureAt(id, index, False)
 		  End If

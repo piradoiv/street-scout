@@ -1,18 +1,23 @@
 #tag MobileScreen
 Begin MobileScreen ViewPictureScreen
    BackButtonCaption=   "asdf"
+   BackgroundColor =   
    Compatibility   =   ""
    ControlCount    =   0
    Device = 1
    HasNavigationBar=   True
    LargeTitleDisplayMode=   0
    Left            =   0
+   NavigationBarColor=   
+   NavigationBarTextColor=   
    Orientation = 0
+   ScaleFactor     =   0.0
    TabBarVisible   =   True
    TabIcon         =   0
    TintColor       =   &c000000
    Title           =   "Untitled"
    Top             =   0
+   _mTabBarVisible =   False
    Begin MobileImageViewer PhotoImageViewer
       AccessibilityHint=   ""
       AccessibilityLabel=   ""
@@ -38,15 +43,21 @@ Begin MobileScreen ViewPictureScreen
    Begin MobileButton PreviousButton
       AccessibilityHint=   ""
       AccessibilityLabel=   ""
+      AdjustTextSizeToFit=   False
       AutoLayout      =   PreviousButton, 4, BottomLayoutGuide, 3, False, +1.00, 4, 1, 0, , True
       AutoLayout      =   PreviousButton, 8, , 0, False, +1.00, 4, 1, 75, , True
       AutoLayout      =   PreviousButton, 1, <Parent>, 1, False, +1.00, 4, 1, 0, , True
       AutoLayout      =   PreviousButton, 7, <Parent>, 7, False, +0.50, 4, 1, 0, , True
+      BackgroundColor =   
+      BorderColor     =   
+      BorderWidth     =   0
       Caption         =   "Previous"
       CaptionColor    =   &c007AFF00
       ControlCount    =   0
+      CornerSize      =   0
       Enabled         =   False
       Height          =   75
+      Icon            =   0
       Left            =   0
       LockedInPosition=   False
       Scope           =   2
@@ -61,15 +72,21 @@ Begin MobileScreen ViewPictureScreen
    Begin MobileButton NextButton
       AccessibilityHint=   ""
       AccessibilityLabel=   ""
+      AdjustTextSizeToFit=   False
       AutoLayout      =   NextButton, 4, BottomLayoutGuide, 3, False, +1.00, 4, 1, 0, , True
       AutoLayout      =   NextButton, 8, PreviousButton, 8, False, +1.00, 4, 1, 0, , True
       AutoLayout      =   NextButton, 2, <Parent>, 2, False, +1.00, 4, 1, 0, , True
       AutoLayout      =   NextButton, 7, , 0, False, +1.00, 4, 1, 160, , True
+      BackgroundColor =   
+      BorderColor     =   
+      BorderWidth     =   0
       Caption         =   "Next"
       CaptionColor    =   &c007AFF00
       ControlCount    =   0
+      CornerSize      =   0
       Enabled         =   False
       Height          =   75
+      Icon            =   0
       Left            =   160
       LockedInPosition=   False
       Scope           =   2
@@ -101,13 +118,13 @@ Begin MobileScreen ViewPictureScreen
       Type            =   1001
       Width           =   70.0
    End
-   Begin MobileMapViewer PhotoMapViewer
+   Begin MobileMapViewer Map
       AccessibilityHint=   ""
       AccessibilityLabel=   ""
-      AutoLayout      =   PhotoMapViewer, 8, PhotoImageViewer, 8, False, +1.00, 4, 1, 0, , True
-      AutoLayout      =   PhotoMapViewer, 1, PhotoImageViewer, 1, False, +1.00, 4, 1, 0, , True
-      AutoLayout      =   PhotoMapViewer, 3, PhotoImageViewer, 3, False, +1.00, 4, 1, 0, , True
-      AutoLayout      =   PhotoMapViewer, 7, PhotoImageViewer, 7, False, +1.00, 4, 1, 0, , True
+      AutoLayout      =   Map, 8, PhotoImageViewer, 8, False, +1.00, 4, 1, 0, , True
+      AutoLayout      =   Map, 1, PhotoImageViewer, 1, False, +1.00, 4, 1, 0, , True
+      AutoLayout      =   Map, 3, PhotoImageViewer, 3, False, +1.00, 4, 1, 0, , True
+      AutoLayout      =   Map, 7, PhotoImageViewer, 7, False, +1.00, 4, 1, 0, , True
       ControlCount    =   0
       Enabled         =   True
       Height          =   420
@@ -124,6 +141,31 @@ Begin MobileScreen ViewPictureScreen
       Width           =   320
       ZoomRadius      =   1.0
       _ClosingFired   =   False
+      Begin MobileSegmentedButton MapModeSegmentedButton
+         AccessibilityHint=   ""
+         AccessibilityLabel=   ""
+         AutoLayout      =   MapModeSegmentedButton, 8, , 0, True, +1.00, 4, 1, 29, , True
+         AutoLayout      =   MapModeSegmentedButton, 2, Map, 2, False, +1.00, 4, 1, -20, , True
+         AutoLayout      =   MapModeSegmentedButton, 3, Map, 3, False, +1.00, 4, 1, 20, , True
+         AutoLayout      =   MapModeSegmentedButton, 7, , 0, False, +1.00, 4, 1, 183, , True
+         ControlCount    =   0
+         Enabled         =   True
+         Height          =   29
+         LastSegmentIndex=   0
+         Left            =   117
+         LockedInPosition=   False
+         PanelIndex      =   0
+         Parent          =   "Map"
+         Scope           =   2
+         SegmentCount    =   0
+         Segments        =   "Roadmap\n\nTrue\rHybrid\n\nFalse"
+         SelectedSegmentIndex=   0
+         TintColor       =   &c000000
+         Top             =   85
+         Visible         =   True
+         Width           =   183
+         _ClosingFired   =   False
+      End
    End
 End
 #tag EndMobileScreen
@@ -135,10 +177,12 @@ End
 		  Case ToggleButton
 		    If Map.Visible Then
 		      Map.Visible = False
+		      MapModeSegmentedButton.Visible = False
 		      PhotoImageViewer.Visible = True
 		      ToggleButton.Caption = "View Map"
 		    Else
 		      Map.Visible = True
+		      MapModeSegmentedButton.Visible = True
 		      PhotoImageViewer.Visible = False
 		      ToggleButton.Caption = "View Photo"
 		    End If
@@ -272,7 +316,66 @@ End
 		End Sub
 	#tag EndEvent
 #tag EndEvents
+#tag Events Map
+	#tag Event
+		Sub Opening()
+		  Me.ZoomRadius = 0
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events MapModeSegmentedButton
+	#tag Event
+		Sub Pressed(segmentedIndex As Integer)
+		  Select Case segmentedIndex
+		  Case 0
+		    Map.MapType = MobileMapViewer.MapTypes.RoadMap
+		  Case 1
+		    Map.MapType = MobileMapViewer.MapTypes.Hybrid
+		  End Select
+		End Sub
+	#tag EndEvent
+#tag EndEvents
 #tag ViewBehavior
+	#tag ViewProperty
+		Name="ScaleFactor"
+		Visible=false
+		Group="Behavior"
+		InitialValue=""
+		Type="Double"
+		EditorType=""
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="_mTabBarVisible"
+		Visible=false
+		Group="Behavior"
+		InitialValue=""
+		Type="Boolean"
+		EditorType=""
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="BackgroundColor"
+		Visible=false
+		Group="Behavior"
+		InitialValue=""
+		Type="ColorGroup"
+		EditorType=""
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="NavigationBarColor"
+		Visible=false
+		Group="Behavior"
+		InitialValue=""
+		Type="ColorGroup"
+		EditorType=""
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="NavigationBarTextColor"
+		Visible=false
+		Group="Behavior"
+		InitialValue=""
+		Type="ColorGroup"
+		EditorType=""
+	#tag EndViewProperty
 	#tag ViewProperty
 		Name="Index"
 		Visible=true

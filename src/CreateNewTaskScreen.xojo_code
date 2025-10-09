@@ -1,18 +1,23 @@
 #tag MobileScreen
 Begin MobileScreen CreateNewTaskScreen
    BackButtonCaption=   ""
+   BackgroundColor =   
    Compatibility   =   ""
    ControlCount    =   0
    Device = 1
    HasNavigationBar=   False
    LargeTitleDisplayMode=   2
    Left            =   0
+   NavigationBarColor=   
+   NavigationBarTextColor=   
    Orientation = 0
+   ScaleFactor     =   0.0
    TabBarVisible   =   True
    TabIcon         =   0
    TintColor       =   &c000000
    Title           =   "Untitled"
    Top             =   0
+   _mTabBarVisible =   False
    Begin MobileRectangle BackgroundRectangle
       AccessibilityHint=   ""
       AccessibilityLabel=   ""
@@ -38,6 +43,7 @@ Begin MobileScreen CreateNewTaskScreen
       Begin MobileLabel TitleLabel
          AccessibilityHint=   ""
          AccessibilityLabel=   ""
+         AdjustTextSizeToFit=   False
          Alignment       =   1
          AutoLayout      =   TitleLabel, 4, MessageLabel, 3, False, +1.00, 4, 1, -*kStdControlGapV, , True
          AutoLayout      =   TitleLabel, 8, , 0, False, +1.00, 2, 2, 87, , True
@@ -62,7 +68,7 @@ Begin MobileScreen CreateNewTaskScreen
          TextFont        =   ""
          TextSize        =   30
          TintColor       =   &c000000
-         Top             =   154
+         Top             =   149
          Visible         =   True
          Width           =   280
          _ClosingFired   =   False
@@ -84,8 +90,9 @@ Begin MobileScreen CreateNewTaskScreen
          Parent          =   "BackgroundRectangle"
          Scope           =   0
          Shade           =   0
+         Style           =   0
          TintColor       =   &c000000
-         Top             =   327
+         Top             =   332
          Visible         =   True
          Width           =   24
          _ClosingFired   =   False
@@ -93,14 +100,15 @@ Begin MobileScreen CreateNewTaskScreen
       Begin MobileLabel MessageLabel
          AccessibilityHint=   ""
          AccessibilityLabel=   ""
+         AdjustTextSizeToFit=   False
          Alignment       =   1
          AutoLayout      =   MessageLabel, 9, <Parent>, 9, False, +1.00, 4, 1, 0, , True
-         AutoLayout      =   MessageLabel, 8, , 0, False, +1.00, 4, 1, 70, , True
+         AutoLayout      =   MessageLabel, 8, , 0, False, +1.00, 4, 1, 80, , True
          AutoLayout      =   MessageLabel, 10, <Parent>, 10, False, +1.00, 4, 1, 0, , True
          AutoLayout      =   MessageLabel, 7, , 0, False, +1.00, 4, 1, 280, , True
          ControlCount    =   0
          Enabled         =   True
-         Height          =   70
+         Height          =   80
          InitialParent   =   "BackgroundRectangle"
          Left            =   20
          LineBreakMode   =   0
@@ -117,7 +125,7 @@ Begin MobileScreen CreateNewTaskScreen
          TextFont        =   ""
          TextSize        =   18
          TintColor       =   &c000000
-         Top             =   249
+         Top             =   244
          Visible         =   True
          Width           =   280
          _ClosingFired   =   False
@@ -252,7 +260,7 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub LocationChanged(latitude As Double, longitude As Double, accuracy As Double, altitude As Double, altitudeAccuracy As Double, course As Double, speed As Double)
+		Sub LocationChanged(latitude As Double, longitude As Double, accuracy As Double, altitude As Double, altitudeAccuracy As Double, course As Double, speed As Double, timeStamp As DateTime)
 		  System.DebugLog(CurrentMethodName + ": " + latitude.ToString + " - " + longitude.ToString + " accuracy: " + accuracy.ToString)
 		  
 		  mLastLocation = New MapLocation(latitude, longitude)
@@ -289,6 +297,46 @@ End
 	#tag EndEvent
 #tag EndEvents
 #tag ViewBehavior
+	#tag ViewProperty
+		Name="ScaleFactor"
+		Visible=false
+		Group="Behavior"
+		InitialValue=""
+		Type="Double"
+		EditorType=""
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="_mTabBarVisible"
+		Visible=false
+		Group="Behavior"
+		InitialValue=""
+		Type="Boolean"
+		EditorType=""
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="BackgroundColor"
+		Visible=false
+		Group="Behavior"
+		InitialValue=""
+		Type="ColorGroup"
+		EditorType=""
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="NavigationBarColor"
+		Visible=false
+		Group="Behavior"
+		InitialValue=""
+		Type="ColorGroup"
+		EditorType=""
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="NavigationBarTextColor"
+		Visible=false
+		Group="Behavior"
+		InitialValue=""
+		Type="ColorGroup"
+		EditorType=""
+	#tag EndViewProperty
 	#tag ViewProperty
 		Name="Index"
 		Visible=true

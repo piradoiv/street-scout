@@ -1,18 +1,23 @@
 #tag MobileScreen
 Begin MobileScreen SurveyTaskScreen Implements iOSMobileTableDataSourceEditing
    BackButtonCaption=   "Back"
+   BackgroundColor =   
    Compatibility   =   ""
    ControlCount    =   0
    Device = 1
    HasNavigationBar=   True
    LargeTitleDisplayMode=   0
    Left            =   0
+   NavigationBarColor=   
+   NavigationBarTextColor=   
    Orientation = 0
+   ScaleFactor     =   0.0
    TabBarVisible   =   True
    TabIcon         =   0
    TintColor       =   &c000000
    Title           =   "Survey Task"
    Top             =   0
+   _mTabBarVisible =   False
    Begin iOSMobileTable ScreenTable
       AccessibilityHint=   ""
       AccessibilityLabel=   ""
@@ -22,6 +27,7 @@ Begin MobileScreen SurveyTaskScreen Implements iOSMobileTableDataSourceEditing
       AutoLayout      =   ScreenTable, 1, <Parent>, 1, False, +1.00, 4, 1, 0, , True
       AutoLayout      =   ScreenTable, 2, <Parent>, 2, False, +1.00, 4, 1, 0, , True
       AutoLayout      =   ScreenTable, 3, TopLayoutGuide, 4, False, +1.00, 4, 1, 0, , True
+      backgroundColor =   
       ControlCount    =   0
       EditingEnabled  =   False
       EditingEnabled  =   False
@@ -32,7 +38,10 @@ Begin MobileScreen SurveyTaskScreen Implements iOSMobileTableDataSourceEditing
       Left            =   0
       LockedInPosition=   False
       Scope           =   2
+      SectionBackgroundColor=   
       SectionCount    =   0
+      SectionTextColor=   
+      SelectedRowColor=   
       TintColor       =   &c000000
       Top             =   65
       Visible         =   True
@@ -101,20 +110,14 @@ Begin MobileScreen SurveyTaskScreen Implements iOSMobileTableDataSourceEditing
    Begin MobileLocation GPS
       Accuracy        =   1
       AllowBackgroundUpdates=   False
-      AuthorizationState=   ""
-      Height          =   32
-      Height          =   32
-      Left            =   60
-      Left            =   60
+      AuthorizationState=   0
+      Left            =   0
       LockedInPosition=   False
       PanelIndex      =   -1
       Parent          =   ""
       Scope           =   2
-      Top             =   60
-      Top             =   60
+      Top             =   0
       VisitAwareness  =   False
-      Width           =   32
-      Width           =   32
    End
 End
 #tag EndMobileScreen
@@ -147,6 +150,14 @@ End
 		  // Part of the iOSMobileTableDataSourceEditing interface.
 		  
 		  Return section = 1
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Function IndexTitles(table As iOSMobileTable) As String()
+		  Var result() As String
+		  
+		  Return result
 		End Function
 	#tag EndMethod
 
@@ -254,6 +265,12 @@ End
 		  // Part of the iOSMobileTableDataSource interface.
 		  
 		  Return 3
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Function SectionForIndexTitle(table As iOSMobileTable, title As String) As Integer
+		  Return 0
 		End Function
 	#tag EndMethod
 
@@ -470,12 +487,52 @@ End
 #tag EndEvents
 #tag Events GPS
 	#tag Event
-		Sub LocationChanged(latitude As Double, longitude As Double, accuracy As Double, altitude As Double, altitudeAccuracy As Double, course As Double, speed As Double)
+		Sub LocationChanged(latitude As Double, longitude As Double, accuracy As Double, altitude As Double, altitudeAccuracy As Double, course As Double, speed As Double, timeStamp As DateTime)
 		  mLastLocation = latitude : longitude
 		End Sub
 	#tag EndEvent
 #tag EndEvents
 #tag ViewBehavior
+	#tag ViewProperty
+		Name="ScaleFactor"
+		Visible=false
+		Group="Behavior"
+		InitialValue=""
+		Type="Double"
+		EditorType=""
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="_mTabBarVisible"
+		Visible=false
+		Group="Behavior"
+		InitialValue=""
+		Type="Boolean"
+		EditorType=""
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="BackgroundColor"
+		Visible=false
+		Group="Behavior"
+		InitialValue=""
+		Type="ColorGroup"
+		EditorType=""
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="NavigationBarColor"
+		Visible=false
+		Group="Behavior"
+		InitialValue=""
+		Type="ColorGroup"
+		EditorType=""
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="NavigationBarTextColor"
+		Visible=false
+		Group="Behavior"
+		InitialValue=""
+		Type="ColorGroup"
+		EditorType=""
+	#tag EndViewProperty
 	#tag ViewProperty
 		Name="Index"
 		Visible=true

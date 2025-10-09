@@ -1,18 +1,23 @@
 #tag MobileScreen
 Begin MobileScreen MainScreen Implements iOSMobileTableDataSource
    BackButtonCaption=   "Tasks"
+   BackgroundColor =   
    Compatibility   =   ""
    ControlCount    =   0
    Device = 1
    HasNavigationBar=   True
    LargeTitleDisplayMode=   1
    Left            =   0
+   NavigationBarColor=   
+   NavigationBarTextColor=   
    Orientation = 0
+   ScaleFactor     =   0.0
    TabBarVisible   =   True
    TabIcon         =   0
    TintColor       =   &c000000
    Title           =   "Tasks"
    Top             =   0
+   _mTabBarVisible =   False
    Begin MainBlankSlateContainer BlankSlateContainer
       AccessibilityHint=   ""
       AccessibilityLabel=   ""
@@ -30,7 +35,6 @@ Begin MobileScreen MainScreen Implements iOSMobileTableDataSource
       Top             =   65
       Visible         =   False
       Width           =   320
-      _ClosingFired   =   False
    End
    Begin iOSMobileTable ScreenTable
       AccessibilityHint=   ""
@@ -41,6 +45,7 @@ Begin MobileScreen MainScreen Implements iOSMobileTableDataSource
       AutoLayout      =   ScreenTable, 1, <Parent>, 1, False, +1.00, 4, 1, 0, , True
       AutoLayout      =   ScreenTable, 2, <Parent>, 2, False, +1.00, 4, 1, 0, , True
       AutoLayout      =   ScreenTable, 3, TopLayoutGuide, 4, False, +1.00, 4, 1, 0, , True
+      backgroundColor =   
       ControlCount    =   0
       EditingEnabled  =   False
       EditingEnabled  =   False
@@ -51,7 +56,10 @@ Begin MobileScreen MainScreen Implements iOSMobileTableDataSource
       Left            =   0
       LockedInPosition=   False
       Scope           =   2
+      SectionBackgroundColor=   
       SectionCount    =   0
+      SectionTextColor=   
+      SelectedRowColor=   
       TintColor       =   &c000000
       Top             =   65
       Visible         =   True
@@ -147,6 +155,14 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
+		Private Function IndexTitles(table As iOSMobileTable) As String()
+		  Var result() As String
+		  
+		  Return result
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
 		Private Sub NewTaskAvailableHandler(sender As CreateNewTaskScreen, newTask As SurveyTask)
 		  sender.Close
 		  Tasks.Create(newTask)
@@ -227,6 +243,12 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
+		Private Function SectionForIndexTitle(table As iOSMobileTable, title As String) As Integer
+		  Return 0
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
 		Private Function SectionTitle(table As iOSMobileTable, section As Integer) As String
 		  // Part of the iOSMobileTableDataSource interface.
 		  
@@ -265,6 +287,46 @@ End
 	#tag EndEvent
 #tag EndEvents
 #tag ViewBehavior
+	#tag ViewProperty
+		Name="ScaleFactor"
+		Visible=false
+		Group="Behavior"
+		InitialValue=""
+		Type="Double"
+		EditorType=""
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="_mTabBarVisible"
+		Visible=false
+		Group="Behavior"
+		InitialValue=""
+		Type="Boolean"
+		EditorType=""
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="BackgroundColor"
+		Visible=false
+		Group="Behavior"
+		InitialValue=""
+		Type="ColorGroup"
+		EditorType=""
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="NavigationBarColor"
+		Visible=false
+		Group="Behavior"
+		InitialValue=""
+		Type="ColorGroup"
+		EditorType=""
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="NavigationBarTextColor"
+		Visible=false
+		Group="Behavior"
+		InitialValue=""
+		Type="ColorGroup"
+		EditorType=""
+	#tag EndViewProperty
 	#tag ViewProperty
 		Name="Index"
 		Visible=true
