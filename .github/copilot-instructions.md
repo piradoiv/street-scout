@@ -174,3 +174,142 @@ After making any changes:
 - Source code is readable but requires Xojo IDE for compilation and testing
 - Focus on documentation improvements and code review rather than functional testing
 - Always document when changes cannot be fully validated due to tool limitations
+
+### Xojo coding guidelines
+
+This documentation came from [https://documentation.xojo.com/topics/code_management/coding_guidelines.html](https://documentation.xojo.com/topics/code_management/coding_guidelines.html#topics-code-management-coding-guidelines-coding)
+
+Every developer and team should have coding guidelines to help ensure that code is readable by everyone on the team (or even yourself several months from now). There is no such thing as coding guidelines that everyone will agree with, but the guidelines described here are meant to be a starting point and match the coding guidelines generally used for the Xojo example projects and sample code that you see here in the documentation.
+
+The most important thing is consistency, regardless of what guidelines you choose to use. Inconsistent code is more difficult to understand.
+
+#### Definitions
+
+| Term | Definition |
+camel case | The first word in the name is lower cased. Subsequent words are started with an upper case letter: customerName |
+title case | All words in the name are started with an upper case letter: CustomerName |
+
+#### Naming
+
+Having a consistent way to name the things in your project is an important first step in coding standards. Ideally coding standards will help others write correct code more easily and grasp existing code more readily.
+
+#### Constants
+
+- Start with lower case "k", followed by title case: `kMaxUsers`.
+
+#### Local variables
+
+- Use camel case: `Var customerName As String`
+- Minimize use of abbreviations; spell things out. Use `customerName`, not `custNm`.
+- Use of single-letter variables names are acceptable for looping variables, such as used by For loops.
+
+#### Arrays
+
+- Should be plural: `Customers() As String`
+
+#### Properties
+
+- Use title case: `CustomerName`
+- A Private property that is the companion for a Computed Property should start with "m" and then be title case: `mCustomerName`.
+
+#### Methods
+
+- Use title case: `SaveCustomer`
+- Method parameters should be camel case: `SaveCustomer(customerName As String)`
+
+#### Controls
+
+- Use title case, with a suffix indicating the type of control: `OKButton`.
+
+Below are some common suffixes:
+
+| Control | Suffix | Example |
+| AndroidMobileTable, iOSMobileTable | Table | CustomerTable |
+| DesktopButton, WebButton, MobileButton, DesktopBevelButton | Button | SaveButton |
+| DesktopListBox, WebListBox | List | CustomerList |
+| DesktopSegmentedButton, WebSegmentedButton, MobileSegmentedButton | Selector | TaskSelector |
+| DesktopCheckBox, WebCheckBox | Check | TaxableCheck |
+| DesktopPopupMenu, WebPopupMenu, MobilePopupMenu | Popup | StatePopup |
+| DesktopRadioGroup, WebRadioGroup | Radio | SourceRadio |
+| DesktopTextField, WebTextField, MobileTextField | Field | NameField |
+| DesktopTextArea, WebTextArea, MobileTextArea | Area | DescriptionArea |
+| DesktopCanvas, WebCanvas, MobileCanvas | Canvas | GraphCanvas |
+| DesktopLabel, WebLabel, MobileLabel | Label | NameLabel |
+| DesktopPagePanel, WebPagePanel | Panel | MainPanel |
+| DesktopTabPanel, WebTabPanel | Tab | MainTab |
+| DesktopProgressWheel, DesktopProgressBar, WebProgressWheel, WebProgressBar, MobileProgressBar, MobileProgressWheel | Progress | DownloadProgress |
+| DesktopHTMLViewer, WebHTMLViewer, MobileHTMLViewer | Viewer | DocViewer |
+| DesktopImageViewer, WebImageViewer, MobileImageViewer | Image | ProfileImage |
+| DesktopGroupBox | Group | BusinessGroup |
+
+#### Classes (Types)
+
+- Use title case.
+- Subclasses of built-in classes should use original class name as suffix: `CustomerListBox`.
+
+#### Windows
+
+- Use title case with "Window" as the suffix: `CustomerWindow`.
+
+#### Interfaces
+
+- Use title case with "Interface" suffix.
+
+#### Formatting
+
+- Keywords should be in title case:
+```
+For Each c As Customer In Customers
+```
+
+- Data types should be in title case:
+```
+Var count As Integer
+```
+
+- Put spaces between all lists of arguments or parameters:
+```
+SaveCustomer(name, location, value)
+```
+
+- Do not put spaces before or after parenthesis.
+- Methods called without parameters should not include empty parenthesis. Use:
+```
+MyMethod
+```
+
+instead of:
+
+```
+MyMethod()
+```
+
+- Methods with parameters should always include parenthesis. Use:
+```
+MyMethod(42)
+```
+
+instead of:
+```
+MyMethod 42
+```
+
+- Leave blank lines between code lines as appropriate to maintain readability.
+
+#### SQL
+
+- SQL commands are written in uppercase:
+```
+SELECT * FROM Team WHERE City = "Boston"
+```
+
+#### Coding
+
+- Var local variables near where they will be used with one declaration per line.
+- Methods not used outside the class/module should be Private.
+- Prefer dot notation over equivalent global methods when possible: `Var length As Integer = customerName.Length`
+- Never use `Me` when you mean `Self`.
+- Limit globals.
+- Prefer shared methods/properties on classes over global methods/properties on modules.
+- Classes, methods, properties, etc., within a Module or Class should be Private or Protected where possible.
+- When escaping quotes, it must be used the Xojo way. It isn't `\"`, in order to escape a quote, a double quote is used `""`.
